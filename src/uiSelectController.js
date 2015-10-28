@@ -581,7 +581,7 @@ uis.controller('uiSelectCtrl',
       case KEY.ENTER:
         if(ctrl.open && (ctrl.tagging.isActivated || ctrl.activeIndex >= 0)){
           ctrl.select(ctrl.items[ctrl.activeIndex], ctrl.skipFocusser); // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
-        } else {
+        } else if (!$scope.inForm) {
           ctrl.activate(false, true); //In case its the search input in 'multiple' mode
         }
         break;
@@ -608,6 +608,10 @@ uis.controller('uiSelectCtrl',
     //   //TODO: SEGURO?
     //   ctrl.close();
     // }
+
+    if ($scope.inForm && key === KEY.ENTER && !ctrl.open) {
+      return; // allow submit in parent form
+    }
 
     $scope.$apply(function() {
 
